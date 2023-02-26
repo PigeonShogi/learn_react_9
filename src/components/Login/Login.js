@@ -11,10 +11,28 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  /*
+  參考官方文件：https://beta.reactjs.org/reference/react/useEffect#reference
+  useEffect 的第一個參數叫做「Setup Function」，第二個參數為相依陣列。
+  Setup Function 會在元件首次加入DOM時執行。
+  如果 Setup Function 有回傳函式（此函式稱為 Cleanup Function），
+  則每當相依陣列的元素發生變化，React 會先以舊有的值執行 Cleanup Function，
+  再以新值執行 Setup Function。
+  當元件從 DOM 元素移除時，React 也會執行 Cleanup Function。
+  */
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes("@") && enteredPassword.trim().length > 6
-    );
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity!");
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    // 以下回傳內容是 Cleanup Function
+    return () => {
+      console.log("Cleanup!");
+      clearTimeout(identifier);
+    };
   }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
