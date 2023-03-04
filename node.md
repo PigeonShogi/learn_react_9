@@ -1,0 +1,1 @@
+const [state, dispatchFn] = useReducer(reducerFn, initialState, initFn)
